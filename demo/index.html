@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../dist/pell.css">
+    <style>
+        textarea {
+
+        }
+    </style>
+    <script type="module">
+        import { exec, init } from '../src/pell.js'
+
+        const editor = init({
+          element: document.getElementById('editor'),
+          onChange: html => {
+            document.getElementById('html-output').textContent = html
+          },
+          defaultParagraphSeparator: 'p',
+          styleWithCSS: true,
+          actions: [
+            {
+              name: 'bold',
+              icon: '<b>B</b>',
+              title: 'Bold',
+              state: () => queryCommandState('bold'),
+              result: () => exec('bold')
+            },
+            {
+              name: 'italic',
+              icon: '<i>I</i>',
+              title: 'Italic',
+              state: () => queryCommandState('italic'),
+              result: () => exec('italic')
+            },
+            {
+              name: 'underline',
+              icon: '<u>U</u>',
+              title: 'Underline',
+              state: () => queryCommandState('underline'),
+              result: () => exec('underline')
+            },
+            {
+              name: 'strikethrough',
+              icon: '<strike>S</strike>',
+              title: 'Strike-through',
+              state: () => queryCommandState('strikeThrough'),
+              result: () => exec('strikeThrough')
+            },
+            {
+              name: 'heading1',
+              icon: '<b>H<sub>1</sub></b>',
+              title: 'Heading 1',
+              result: () => exec(formatBlock, '<h1>')
+            },
+            {
+              name: 'heading2',
+              icon: '<b>H<sub>2</sub></b>',
+              title: 'Heading 2',
+              result: () => exec(formatBlock, '<h2>')
+            },
+            {
+              name: 'paragraph',
+              icon: '&#182;',
+              title: 'Paragraph',
+              result: () => exec(formatBlock, '<p>')
+            },
+            {
+              name: 'quote',
+              icon: '&#8220; &#8221;',
+              title: 'Quote',
+              result: () => exec(formatBlock, '<blockquote>')
+            },
+            {
+              name: 'olist',
+              icon: '&#35;',
+              title: 'Ordered List',
+              result: () => exec('insertOrderedList')
+            },
+            {
+              name: 'ulist',
+              icon: '&#8226;',
+              title: 'Unordered List',
+              result: () => exec('insertUnorderedList')
+            },
+            {
+              name: 'code',
+              icon: '&lt;/&gt;',
+              title: 'Code',
+              result: () => exec(formatBlock, '<pre>')
+            },
+            {
+              name: 'line',
+              icon: '&#8213;',
+              title: 'Horizontal Line',
+              result: () => exec('insertHorizontalRule')
+            },
+            {
+              name: 'link',
+              icon: '&#128279;',
+              title: 'Link',
+              result: () => {
+                const url = window.prompt('Enter the link URL')
+                if (url) exec('createLink', url)
+              }
+            },
+            {
+              name: 'image',
+              icon: '&#128247;',
+              title: 'Image',
+              result: () => {
+                const url = window.prompt('Enter the image URL')
+                if (url) exec('insertImage', url)
+              }
+            },
+            {
+              name: 'undo',
+              icon: '&#x21b6',
+              result: () => {
+                exec('undo')
+              }
+            },
+            {
+              name: 'redo',
+              icon: '&#x21b7',
+              result: () => {
+                exec('redo')
+              }
+            }
+          ],
+          classes: {
+            actionbar: 'pell-actionbar',
+            button: 'pell-button',
+            content: 'pell-content',
+            selected: 'pell-button-selected'
+          }
+        })
+    </script>
+</head>
+<body>
+    <div id="editor" class="pell"></div>
+    <div>
+      <div id="html-output" style="white-space:pre-wrap;"></div>
+    </div>
+</body>
+</html>
